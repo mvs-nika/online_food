@@ -5,7 +5,7 @@ from app.models import User
 
 
 class CRUDUser(CRUDBase):
-    @staticmethod
+    @staticmethod #изолируем метод, вне зависимости от того что передали
     async def get_user_by_email(db: AsyncSession, email: str):
         user = await db.execute(select(User).filter(User.email == email).limit(1))
         return user.scalar()

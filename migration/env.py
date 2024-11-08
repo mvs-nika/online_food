@@ -1,3 +1,4 @@
+#Указываем путь и метадату дополнительно
 from logging.config import fileConfig
 
 from dotenv import load_dotenv
@@ -6,16 +7,16 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from app.core.config import settings
-from app.core.base import Base
+from app.core.config import settings #дополнительно импортируем из нашего проекта настройки из ядра
+from app.core.base import Base #дополнительно импортируем из нашего проекта базовый класс для создания моделей, чтобы это мог делать alembic
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
-config.set_main_option('sqlalchemy.url', f'{settings.DATABASE_URL}?async_fallback=True')
+config.set_main_option('sqlalchemy.url', f'{settings.DATABASE_URL}?async_fallback=True') #добавляем чтобы алембик находил нашу БД по пути
 
-load_dotenv('env')
+load_dotenv('env') #подгрузить переменные виртуального окружения
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
@@ -27,7 +28,7 @@ if config.config_file_name is not None:
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 
-target_metadata = Base.metadata
+target_metadata = Base.metadata #? metadata данные на основе которых будем создавать таблицы, информация по всем таблицам хранится тут, на основе неё всё будет создаваться
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

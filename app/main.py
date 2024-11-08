@@ -7,7 +7,7 @@ from app.core.config import settings
 
 app = FastAPI(root_path=settings.API_ROOT_PATH, title=settings.APP_TITLE)
 
-app.include_router(main_router)
+app.include_router(main_router, prefix='/api/v1')
 
 
 if __name__ == "main":

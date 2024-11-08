@@ -65,7 +65,7 @@ class LoginUser(BaseModel):
 
 
 class CreateUserInDb(BaseModel):
-    email: EmailStr
+    email: EmailStr #улучшенная версия str, импорт из pydantic, будет проверять ввели ли емейл
 
     hashed_password: str
 

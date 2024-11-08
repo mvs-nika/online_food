@@ -10,8 +10,8 @@ router = APIRouter()
 # Регистрация нового пользователя
 @router.post("/register/")
 async def register(user: CreateAdminUser, db: AsyncSession = Depends(get_async_session)):
-    tokens = await auth_service.register_user(db, user.email, user.password)
-    return tokens
+    tokens = await auth_service.register_user(db, user.email, user.password) #auth_service название файла, кот мы импортировали и обращаемся к фу-ии кот в нем была создана
+    return tokens #возвращает токены, в кот зашит емаил и время работы токена, 30 дней. Далее используют фронтовтки, все запросы к моему профилю будут использовать токены
 
 
 # Вход пользователя

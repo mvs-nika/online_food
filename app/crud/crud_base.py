@@ -41,10 +41,10 @@ class CRUDBase:
             obj_in_data = obj_in.dict()
             # if user is not None:
             #     obj_in_data['id_user'] = user.id
-            db_obj = self.model(**obj_in_data)
+            db_obj = self.model(**obj_in_data) #?Не поняла эту строчку
             session.add(db_obj)
             await session.commit()
-            await session.refresh(db_obj)
+            await session.refresh(db_obj) #?зачем обновляем
             return db_obj
         except IntegrityError as e:
             raise HTTPException(status_code=422, detail=f"Такой объект уже существует.")

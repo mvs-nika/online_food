@@ -1,15 +1,14 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from passlib.context import CryptContext
+from passlib.context import CryptContext #Импортируем криптоконтекст для хеширования пароля(создать фу-ию для этого)
 from app.crud.crud_user import user_crud
 from app.models.user import User
 from fastapi import HTTPException
 from app.core.security import create_access_token, create_refresh_token, decode_token
 from app.schemas.user import CreateUserInDb
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto") #создаем объект от класса криптоконтекст
 
-
-def hash_password(password: str):
+def hash_password(password: str): #фу-ия создает из пароля захешированный пароль, расхешировать обратно не можем, но можем сравнить!
     return pwd_context.hash(password)
 
 
@@ -19,7 +18,7 @@ def verify_password(plain_password: str, hashed_password: str):
 
 async def register_user(db: AsyncSession, email: str, password: str):
     # Проверяем, что пользователь не существует
-    user_in_db = await user_crud.get_user_by_email(db=db, email=email)
+    user_in_db = await user_crud.get_user_by_email(db=db, email=email) #обращаемся к объекту класса CRUDUser, его создаем одного
 
     if user_in_db:
         raise HTTPException(status_code=400, detail="Такой пользователь уже есть!")
@@ -46,7 +45,7 @@ async def authenticate_user(db: AsyncSession, email: str, password: str):
         raise HTTPException(status_code=400, detail="Incorrect email or password")
 
     # Генерация access и refresh токенов
-    access_token = create_access_token({"sub": user.email})
+    access_token = create_access_token({"sub": user.email}) #зачем передаём емаил? мы его не используем
     refresh_token = create_refresh_token({"sub": user.email})
 
     return {"access_token": access_token, "refresh_token": refresh_token}
