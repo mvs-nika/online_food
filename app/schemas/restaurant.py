@@ -6,8 +6,12 @@ from pydantic import BaseModel
 
 class RestaurantBase(BaseModel):
     name: str
-    describe: str
+    describe: Optional[str] = None
     location: str
+
+    class Config:
+        orm_mode = True
+
 
 class RestaurantCreate(RestaurantBase):
     pass

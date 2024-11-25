@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_async_session
+from app.core.security import get_current_admin
+from app.models import User
 from app.schemas.dish import CreateDish, UpdateDish
 from app.services import dish_service
 
@@ -12,7 +14,8 @@ router = APIRouter()
 @router.post('/{restaurant_id}/menu/')
 async def create_dish(
         new_dish: CreateDish,
-        db: AsyncSession = Depends(get_async_session)):
+        db: AsyncSession = Depends(get_async_session),
+        current_admin: User = Depends(get_current_admin)):
     return await dish_service.create_dish(new_dish=new_dish, db=db)
 
 
@@ -27,6 +30,7 @@ async def view_restaurant_menu(
 #обновление информации о блюде
 @router.put('/{restaurant_id}/menu/{dish_id}/')
 async def update_dish(
+        restaurant_id: int,
         dish_id: int,
         new_dish: UpdateDish,
         db: AsyncSession = Depends(get_async_session)):

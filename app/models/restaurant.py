@@ -4,8 +4,8 @@ from app.core.db import Base
 
 
 class Restaurant(Base):
-    name = Column(String)
-    describe = Column(String)
-    location = Column(String)
+    name = Column(String, nullable=False)
+    describe = Column(String, nullable=True)
+    location = Column(String, nullable=True)
 
 

@@ -1,3 +1,4 @@
+import os.path
 from typing import Optional
 from pydantic import BaseSettings
 
@@ -10,6 +11,8 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REFRESH_TOKEN_EXPIRE_DAYS: int = 30
+    STATIC_PATH: str = os.path.join(os.path.dirname(__file__), '../static')
+    STATIC_IMAGE_PATH: str = os.path.join(STATIC_PATH, 'images')
     class Config:
         env_file = '.env' #?как подгружается енв файл по этому коду?
 

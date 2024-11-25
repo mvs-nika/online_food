@@ -8,6 +8,7 @@ class DishBase(BaseModel):
     describe: str
     price: int
     restaurant_id: int
+    image: Optional[str] = None
 
 
 class CreateDish(DishBase):
@@ -19,4 +20,8 @@ class UpdateDish(BaseModel):
     describe: Optional[str]
     price: Optional[int]
     restaurant_id: Optional[int]
+
+
+class DishInDB(DishBase):
+    pass
 

@@ -45,6 +45,9 @@ class UpdateUserForOrg(BaseModel):
             raise ValueError("Невалидный пароль. Убедитесь, что новый пароль соответствует требованиям.")
         return value
 
+class TokenData(BaseModel):
+    email: str
+
 
 class UpdateUserInDb(BaseModel):
     id: int

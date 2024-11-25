@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Form
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.schemas.user import CreateAdminUser, LoginUser
@@ -10,9 +10,8 @@ router = APIRouter()
 # Регистрация нового пользователя
 @router.post("/register/")
 async def register(user: CreateAdminUser, db: AsyncSession = Depends(get_async_session)):
-    tokens = await auth_service.register_user(db, user.email, user.password) #auth_service название файла, кот мы импортировали и обращаемся к фу-ии кот в нем была создана
-    return tokens #возвращает токены, в кот зашит емаил и время работы токена, 30 дней. Далее используют фронтовтки, все запросы к моему профилю будут использовать токены
-
+    tokens = await auth_service.register_user(db, user.email, user.password)
+    return tokens
 
 # Вход пользователя
 @router.post("/login/")
@@ -22,7 +21,17 @@ async def login(user: LoginUser, db: AsyncSession = Depends(get_async_session)):
 
 
 # Обновление access токена через refresh токен
-@router.post("/refresh/")
+@router.post("/refresh/") #?не понимаю этот эндпойнт, зачем он нужен
 async def refresh(refresh_token: str):
     tokens = await auth_service.refresh_access_token(refresh_token)
+    return tokens
+
+#Вход пользователя
+
+@router.post('/token/')
+async def login_for_access_token(
+        db: AsyncSession = Depends(get_async_session),
+        username: str = Form(...),
+        password: str = Form(...)):
+    tokens = await auth_service.authenticate_user(db, username, password)
     return tokens

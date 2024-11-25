@@ -2,10 +2,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud import restaurant_crud
 from app.models import Restaurant
-from app.schemas.restaurant import RestaurantCreate, RestaurantUpdate
+from app.schemas.restaurant import RestaurantCreate, RestaurantUpdate, RestaurantBase
 
 
-async def fetch_restaurant(db: AsyncSession):
+async def fetch_restaurant(db: AsyncSession) -> list[RestaurantBase]:
     restaurants = await restaurant_crud.get_multi(session=db)
     return restaurants
 

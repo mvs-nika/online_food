@@ -18,7 +18,7 @@ class CRUDDish(CRUDBase):
             )
         )
         menu = menu.scalars().all()
-        if menu is None:
+        if len(menu) == 0:
             raise HTTPException(status_code=404, detail="Меню не найдено")
         return menu
 

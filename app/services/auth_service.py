@@ -17,9 +17,8 @@ def verify_password(plain_password: str, hashed_password: str):
 
 
 async def register_user(db: AsyncSession, email: str, password: str):
-    # Проверяем, что пользователь не существует
-    user_in_db = await user_crud.get_user_by_email(db=db, email=email) #обращаемся к объекту класса CRUDUser, его создаем одного
 
+    user_in_db = await user_crud.get_user_by_email(db=db, email=email)
     if user_in_db:
         raise HTTPException(status_code=400, detail="Такой пользователь уже есть!")
 
@@ -31,8 +30,8 @@ async def register_user(db: AsyncSession, email: str, password: str):
     await user_crud.create(obj_in=new_user, session=db)
 
     # Генерация access и refresh токенов
-    access_token = create_access_token({"sub": new_user.email})
-    refresh_token = create_refresh_token({"sub": new_user.email})
+    access_token = create_access_token({"sub": new_user.email}) #?почему sub
+    refresh_token = create_refresh_token({"sub": new_user.email}) #?зачем рефреш токен
 
     return {"access_token": access_token, "refresh_token": refresh_token}
 
@@ -45,7 +44,7 @@ async def authenticate_user(db: AsyncSession, email: str, password: str):
         raise HTTPException(status_code=400, detail="Incorrect email or password")
 
     # Генерация access и refresh токенов
-    access_token = create_access_token({"sub": user.email}) #зачем передаём емаил? мы его не используем
+    access_token = create_access_token({"sub": user.email})  #при каждом входе в систему генерируются новые токены?
     refresh_token = create_refresh_token({"sub": user.email})
 
     return {"access_token": access_token, "refresh_token": refresh_token}
